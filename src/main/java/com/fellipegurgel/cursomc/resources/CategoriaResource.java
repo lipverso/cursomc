@@ -31,6 +31,7 @@ public class CategoriaResource {
 		lista.add(cat2);
 		
 		// 5. Retornar a lista
+		// Obs: Sera retornado em formato JSON
 		return lista;
 	}
 	

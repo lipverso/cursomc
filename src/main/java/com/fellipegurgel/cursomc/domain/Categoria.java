@@ -1,34 +1,30 @@
 package com.fellipegurgel.cursomc.domain;
 
 import java.io.Serializable;
-						//** 6.1 **
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+				
+//Para criar tabela Categoria com Id e nome:
+// Para usar JPA e fazer mapeamento objeto relacional, primeiro adicionar
+// 1. @Entity indicando que essa classe sera uma entidade do JPA.
+@Entity
 public class Categoria implements Serializable {
 	//Versao 1 da classe = 1L
-	
-	//** 6.2 **
 	private static final long serialVersionUID = 1L;
 	
-	//Checklist para classe de dominio (criar entidades)
-	//1) Criar Atributos Basicos
-	//2) Associacoes (inicie as colecoes)
-	//3)  Construtores (Nao incluir colecoes no construtor com parametros
-	//4) Getters e Setters
-	//5) hashCode e equals (impletancao padrao somente ID), para que
-	//os objeto sejam comparados pelo conteudo, nao ponteiro memoria
-	//6) Serializable (padrao: 1L). Assim, objetos da classe poderao
-	// ser convertidos para uma sequencia de bytes, para que
-	// os objetos possam ser gravados em arquivos, trafegar em rede, etc.
+	//2. Adicionar @id em cima do campo id (chave primaria da tabela do banco)
 	
-	// **1**
+	@Id 
+	//3. Definir geracao automatica de IDs (usando a estrategia seguinte), utilizando @GeneratedValue
+	// O Identity e compativel com o Banco de Dados H2. Dependendo do banco de dados
+	// utilizando, tera que ser usado outro tipo de chave primaria.
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	private String nome;
 	
-	// **2**
-	//Esta classe categoria esta associada com classe Produto
-	//Porem, como estou comecando a testar somente a Categoria
-	//Nao irei fazer a associacao agora. Ignorar passo 2
-	
-	//** 3 **
 	public Categoria ()
 	{
 		
@@ -40,7 +36,6 @@ public class Categoria implements Serializable {
 		this.nome = nome;
 	}
 	
-	//** 4 **
 	public Integer getId() {
 		return id;
 	}
@@ -57,7 +52,6 @@ public class Categoria implements Serializable {
 		this.nome = nome;
 	}
 	
-	// ** 5 **
 	@Override
 	public int hashCode() {
 		final int prime = 31;
