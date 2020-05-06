@@ -1,38 +1,58 @@
 package com.fellipegurgel.cursomc.resources;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fellipegurgel.cursomc.domain.Categoria;
+import com.fellipegurgel.cursomc.services.CategoriaService;
 
-@RestController //Adicionar RestController e RequestMapping para iniciar REST
-@RequestMapping(value="/Categorias") //Nome no Plural da Classe, geralmente
+import javassist.tools.rmi.ObjectNotFoundException;
+
+//Atualizando o Resource (Controlador Rest) para ser capaz de buscar uma categoria
+// 1) Acrescentar que no end point categoria ainda vai receber o id da categoria, nao somente a palavra categoria. 
+
+@RestController 
+@RequestMapping(value="/categorias") 
 public class CategoriaResource {
 	
-	@RequestMapping(method=RequestMethod.GET)
-	// 4. Alterar o nome do metodo para retornar uma lista de categorias
-	public List <Categoria> listar() 
+	// ** 4 **
+	@Autowired
+	private CategoriaService service;
+	
+	// ** 1 **
+	@RequestMapping(value="/{id}", method=RequestMethod.GET)
+	//Isto significa que o end point do metodo abaixo agora sera /categorias/id
+	//2) Em seguida, tenho que alterar o metodo para especificar que ele ira receber 
+	//como parametro uma id que vai vir na minha URL.
+	//Para que o Spring saiba que esse id da url vai ter que vir pro id da variavel,
+	// incluo a anotacao @PathVariable
+	
+	//3)Alterar o retorno do metodo para ResponseEntity. Este e um tipo especial
+	//do Spring que ja encapsula varias informacoes de uma resposta HTTP para um servico REST
+	// Passarei o tipo ? para informar que pode ser de qualquer tipo (encontrar, nao encontrar,etc.)
+	
+			//** 3 **						// ** 2 **
+	public ResponseEntity<?> find(@PathVariable Integer id) throws ObjectNotFoundException 
 	{
-		//1. Instanciando os primeiros dois objetos Categoria
-		Categoria cat1 = new Categoria(1,"Informatica");
-		Categoria cat2 = new Categoria (2,"Escritorio");
+		//4) O que seria encontrar uma Categoria com o id acima?
+		// Vou adicionar uma declaracao CategoriaService service, colocar o @Autowired
+		// e dentro do metodo: 
+		//5) adiciono uma declaracao de uma categoria obj recebendo o servico find, metodo que implementamos
+		// anteriormente no CategoriaService
 		
-		//2. Criando Lista de Categorias
-		//Como List e uma interface, ao criar o objeto e necessario
-		// usar uma classe que possa ser implementada, como a ArrayList
-		List <Categoria> lista = new ArrayList<>();
+		// ** 5 **
+		Categoria obj = service.find(id);
 		
-		// 3. Adicionando os bojetos cat1 e cat2 a lista
-		lista.add(cat1);
-		lista.add(cat2);
+		// 6) Fui no servico, mandei buscar a categoria que tem tal id
+		// Agora o metodo vai retornar um objeto ResponseEntity, objeto que tem protocolos HTTP,
+		// uma forma de falar que a resposta ocorreu tudo bem, e colocar ResponseEntity.ok().body(obj)
+		// o body tera o objeto obj, que e a categoria.
+		return ResponseEntity.ok().body(obj);
 		
-		// 5. Retornar a lista
-		// Obs: Sera retornado em formato JSON
-		return lista;
 	}
 	
 }
