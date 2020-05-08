@@ -34,9 +34,7 @@ public class CategoriaResource {
 	//3)Alterar o retorno do metodo para ResponseEntity. Este e um tipo especial
 	//do Spring que ja encapsula varias informacoes de uma resposta HTTP para um servico REST
 	// Passarei o tipo ? para informar que pode ser de qualquer tipo (encontrar, nao encontrar,etc.)
-	
-			//** 3 **						// ** 2 **
-	public ResponseEntity<?> find(@PathVariable Integer id) throws ObjectNotFoundException 
+	public ResponseEntity<?> find(@PathVariable Integer id) 
 	{
 		//4) O que seria encontrar uma Categoria com o id acima?
 		// Vou adicionar uma declaracao CategoriaService service, colocar o @Autowired
@@ -47,10 +45,6 @@ public class CategoriaResource {
 		// ** 5 **
 		Categoria obj = service.find(id);
 		
-		// 6) Fui no servico, mandei buscar a categoria que tem tal id
-		// Agora o metodo vai retornar um objeto ResponseEntity, objeto que tem protocolos HTTP,
-		// uma forma de falar que a resposta ocorreu tudo bem, e colocar ResponseEntity.ok().body(obj)
-		// o body tera o objeto obj, que e a categoria.
 		return ResponseEntity.ok().body(obj);
 		
 	}
