@@ -1,11 +1,14 @@
 package com.fellipegurgel.cursomc.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 				
 //Para criar tabela Categoria com Id e nome:
 // Para usar JPA e fazer mapeamento objeto relacional, primeiro adicionar
@@ -25,6 +28,15 @@ public class Categoria implements Serializable {
 	private Integer id;
 	private String nome;
 	
+	//Comecando com associacoes, uma categoria tera varios produtos, entao, uma lista de produtos. Inicia-la
+	//Fazer isso apos criar a classe Produtos (obviamente)
+	//Adicionar o mapeamento @ManyToMany e especificar que este mapemaento e apenas um outro lado de um outro
+	// mapeamento que foi feito em cima do atributo "categorias"
+	
+	@ManyToMany(mappedBy="categorias")
+	private List<Produto> produtos = new ArrayList<>();
+	
+	
 	public Categoria ()
 	{
 		
@@ -34,6 +46,14 @@ public class Categoria implements Serializable {
 		super();
 		this.id = id;
 		this.nome = nome;
+	}
+	
+	public List<Produto> getProdutos() {
+		return produtos;
+	}
+
+	public void setProdutos(List<Produto> produtos) {
+		this.produtos = produtos;
 	}
 	
 	public Integer getId() {
@@ -76,6 +96,8 @@ public class Categoria implements Serializable {
 			return false;
 		return true;
 	}
+
+
 	
 	
 
